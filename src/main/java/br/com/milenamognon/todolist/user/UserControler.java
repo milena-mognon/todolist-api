@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/users")
 public class UserControler {
@@ -23,5 +25,16 @@ public class UserControler {
     
     var userCreated = this.userRepository.save(userModel);
     return ResponseEntity.status(200).body(userCreated);
+  }
+  
+  @GetMapping("/{id}")
+  public ResponseEntity show(@PathVariable UUID id) {
+    var user = this.userRepository.findById(id);
+    
+    if(user == null) {
+      return ResponseEntity.status(400).body("Usuário não existe!");
+    }
+    
+    return ResponseEntity.status(200).body(user);
   }
 }

@@ -37,4 +37,13 @@ public class UserControler {
     
     return ResponseEntity.status(200).body(user);
   }
+  
+  @GetMapping("/")
+  public ResponseEntity index() {
+    var users = this.userRepository.findAll();
+    
+    return ResponseEntity.status(200).body(users);
+  }
+  
+  // TODO - update
 }

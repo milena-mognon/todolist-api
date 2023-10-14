@@ -42,4 +42,13 @@ public class TaskController {
     
     return ResponseEntity.status(200).body(tasks);
   }
+  
+  @PutMapping("/{id}")
+  public ResponseEntity update(@RequestBody TaskModel taskModel, @PathVariable UUID id, HttpServletRequest request) {
+    var idUser = (UUID) request.getAttribute("idUser");
+    taskModel.setIdUser(idUser);
+    taskModel.setId(id);
+    var task = this.taskRepository.save(taskModel);
+    return ResponseEntity.status(200).body(task);
+  }
 }

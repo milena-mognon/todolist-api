@@ -1,5 +1,6 @@
 package br.com.milenamognon.todolist.task;
 
+import br.com.milenamognon.todolist.utils.Utils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -45,10 +46,12 @@ public class TaskController {
   
   @PutMapping("/{id}")
   public ResponseEntity update(@RequestBody TaskModel taskModel, @PathVariable UUID id, HttpServletRequest request) {
-    var idUser = (UUID) request.getAttribute("idUser");
-    taskModel.setIdUser(idUser);
-    taskModel.setId(id);
-    var task = this.taskRepository.save(taskModel);
-    return ResponseEntity.status(200).body(task);
+    var task = this.taskRepository.findById(id).orElse(null);
+    
+    Utils.copyNonNullProperties(taskModel, task);
+    
+    var updated_task = this.taskRepository.save(task);
+    
+    return ResponseEntity.status(200).body(updated_task);
   }
 }

@@ -1,6 +1,7 @@
 package br.com.milenamognon.todolist.user;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import br.com.milenamognon.todolist.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,22 +49,12 @@ public class UserControler {
   
   @PatchMapping("/{id}")
   public ResponseEntity update(@PathVariable UUID id, @RequestBody UserModel userModel) {
-    var user = this.userRepository.findById(id);
+    var user = this.userRepository.findById(id).orElse(null);
     
-    if(user.isPresent()) {
-      var existingUser = user.get();
-      
-      // Atualize apenas os campos fornecidos no objeto UserModel
-      if(userModel.getName() != null) {
-        existingUser.setName(userModel.getName());
-      }
-      
-      // Salve o usuário atualizado no banco de dados
-      var user_updated = this.userRepository.save(existingUser);
-      
-      return ResponseEntity.status(200).body(user_updated);
-    } else {
-      return ResponseEntity.status(400).body("Usuário não existe!");
-    }
+    Utils.copyNonNullProperties(userModel, user);
+    
+    var updated_user = this.userRepository.save(user);
+    
+    return ResponseEntity.status(200).body(updated_user);
   }
 }

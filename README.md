@@ -1,6 +1,6 @@
-# API TodoList - Gerencianciamento de Tarefas
+# API TodoList - Gerenciamento de Tarefas
 
-Essa API é um projeto simples desenvolvido para estudo dos fundamentos básicos do Framework Spring Boot (Java). 
+Esta API é um projeto desenvolvido com o objetivo de explorar os princípios fundamentais do Framework Spring Boot (Java), servindo como uma sólida base para estudo e aprimoramento profissional.
 
 ## Ferramentas e Tecnologias Utilizadas
 * Java 17

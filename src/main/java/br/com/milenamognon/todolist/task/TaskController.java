@@ -48,6 +48,16 @@ public class TaskController {
   public ResponseEntity update(@RequestBody TaskModel taskModel, @PathVariable UUID id, HttpServletRequest request) {
     var task = this.taskRepository.findById(id).orElse(null);
     
+    var idUser = (UUID) request.getAttribute("idUser");
+    
+    if(task == null) {
+      return ResponseEntity.status(400).body("Tarefa não encontrada");
+    }
+    
+    if(!task.getIdUser().equals(idUser)) {
+      return ResponseEntity.status(400).body("Usuário não tem permissão para alterar essa tarefa");
+    }
+    
     Utils.copyNonNullProperties(taskModel, task);
     
     var updated_task = this.taskRepository.save(task);

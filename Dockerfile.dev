@@ -1,0 +1,28 @@
+FROM ubuntu:latest AS build
+
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jdk && \
+    apt-get install -y maven&& \
+    rm -rf /var/lib/apt/lists/*
+
+# Defina um diretório de trabalho padrão
+WORKDIR /app
+
+# Copie todos os arquivos para o diretório de trabalho
+COPY . .
+
+# Execute o build do Maven
+RUN mvn clean install
+
+# Troque para a imagem OpenJDK para a execução
+FROM openjdk:17-jdk-slim
+
+# Exponha a porta 8080 (se o aplicativo precisar disso)
+EXPOSE 8080
+
+# Copie o arquivo JAR construído a partir da fase de build
+COPY --from=build /app/target/todolist-1.0.0.jar app.jar
+
+# Use o ENTRYPOINT com o comando Java corretamente
+ENTRYPOINT ["java", "-jar", "app.jar"]
+

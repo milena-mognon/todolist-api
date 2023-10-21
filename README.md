@@ -63,6 +63,17 @@ docker build -t todolist:1.0 .
 docker run --rm -p 8080:8080 todolist:1.0
 ```
 
+## Melhorias Adicionais
+
+Foi adicionada nesse projeto uma configuração de CI (Continuous Integration) executada pelo GitHub Actions.
+Nessa configuração foi incluído a publicação da imagem docker no DockerHub, o que possibilita que qualquer pessoa com
+docker instalado possa testar a aplicação sem o código-fonte.
+
+```bash
+# Executar o programa com a imagem publicada no dockerhub 
+docker run --rm -p 8080:8080 milenamognon/todolist:1.0
+```
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)

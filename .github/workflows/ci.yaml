@@ -31,9 +31,15 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3 # Permite que o docker consiga gerar o build das imagens
 
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v5 # Faz o Build e da o push
         with:
-          push: false
+          push: true
           tags: milenamognon/todolist:1.0 # endereço do dockerhub e nome da imagem
